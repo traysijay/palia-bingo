@@ -13,14 +13,9 @@
 
   <style>
 
-    /* ==========================================
-       GLOBAL COLORS
-       ========================================== */
-
     :root {
       --background: #f5f0e8;
       --background-secondary: #ebe4f2;
-
       --panel: rgba(255, 255, 255, 0.92);
 
       --text: #263238;
@@ -44,11 +39,6 @@
       --shadow:
         0 8px 24px rgba(45, 54, 60, 0.10);
     }
-
-
-    /* ==========================================
-       PAGE
-       ========================================== */
 
     * {
       box-sizing: border-box;
@@ -81,17 +71,11 @@
       min-height: 100vh;
     }
 
-
     .app-container {
       width: min(1100px, 94%);
       margin: 0 auto;
       padding: 30px 0 70px;
     }
-
-
-    /* ==========================================
-       HEADER
-       ========================================== */
 
     .hero {
       text-align: center;
@@ -126,11 +110,6 @@
       line-height: 1.5;
     }
 
-
-    /* ==========================================
-       PANELS
-       ========================================== */
-
     .panel {
       background: var(--panel);
 
@@ -157,17 +136,11 @@
     }
 
     .panel-description {
-      margin:
-        0 0 20px;
+      margin: 0 0 20px;
 
       color: var(--muted);
       font-size: 15px;
     }
-
-
-    /* ==========================================
-       SETUP GRID
-       ========================================== */
 
     .setup-grid {
       display: grid;
@@ -181,11 +154,6 @@
     .setup-grid .panel {
       margin-bottom: 0;
     }
-
-
-    /* ==========================================
-       OPTION BUTTONS
-       ========================================== */
 
     .option-buttons {
       display: grid;
@@ -251,11 +219,6 @@
         rgba(54, 139, 135, 0.20);
     }
 
-
-    /* ==========================================
-       TIMER
-       ========================================== */
-
     .timer-panel {
       text-align: center;
     }
@@ -296,6 +259,7 @@
     }
 
     .auto-start {
+      display: block;
       margin-top: 18px;
 
       color: var(--muted);
@@ -354,11 +318,6 @@
         #ded3ee;
     }
 
-
-    /* ==========================================
-       GENERATE BUTTON
-       ========================================== */
-
     .generate-area {
       text-align: center;
       margin: 28px 0;
@@ -402,11 +361,6 @@
         rgba(35, 105, 101, 0.30);
     }
 
-
-    /* ==========================================
-       MESSAGES
-       ========================================== */
-
     #message {
       min-height: 25px;
 
@@ -419,11 +373,6 @@
 
       font-size: 16px;
     }
-
-
-    /* ==========================================
-       SAVED GAME
-       ========================================== */
 
     #savedGamePanel {
       display: none;
@@ -489,11 +438,6 @@
         var(--gold-light);
     }
 
-
-    /* ==========================================
-       GAME STATUS
-       ========================================== */
-
     #gameStatus {
       display: none;
     }
@@ -535,11 +479,6 @@
         var(--teal-dark);
     }
 
-
-    /* ==========================================
-       PROGRESS
-       ========================================== */
-
     .progress-wrapper {
       max-width: 700px;
       margin: 0 auto 24px;
@@ -550,6 +489,8 @@
 
       justify-content:
         space-between;
+
+      gap: 12px;
 
       font-size: 14px;
 
@@ -588,11 +529,6 @@
       transition:
         width 0.3s ease;
     }
-
-
-    /* ==========================================
-       WIN BANNER
-       ========================================== */
 
     #winBanner {
       display: none;
@@ -661,11 +597,6 @@
         opacity: 1;
       }
     }
-
-
-    /* ==========================================
-       BINGO BOARD
-       ========================================== */
 
     #bingoBoard {
       display: grid;
@@ -799,11 +730,6 @@
         var(--purple) !important;
     }
 
-
-    /* ==========================================
-       FOOTER
-       ========================================== */
-
     .footer {
       text-align: center;
 
@@ -813,11 +739,6 @@
 
       font-size: 13px;
     }
-
-
-    /* ==========================================
-       MOBILE
-       ========================================== */
 
     @media (
       max-width: 760px
@@ -858,7 +779,6 @@
       }
     }
 
-
     @media (
       max-width: 480px
     ) {
@@ -877,6 +797,11 @@
 
         font-size: 9.5px;
       }
+
+      .progress-info {
+        flex-direction: column;
+        align-items: center;
+      }
     }
 
   </style>
@@ -886,11 +811,6 @@
 <body>
 
 <div class="app-container">
-
-
-  <!-- ========================================
-       HEADER
-       ======================================== -->
 
   <div class="hero">
 
@@ -907,10 +827,6 @@
 
   </div>
 
-
-  <!-- ========================================
-       SAVED GAME
-       ======================================== -->
 
   <div id="savedGamePanel">
 
@@ -944,12 +860,7 @@
   </div>
 
 
-  <!-- ========================================
-       SETUP
-       ======================================== -->
-
   <div class="setup-grid">
-
 
     <div class="panel">
 
@@ -1044,10 +955,6 @@
 
   </div>
 
-
-  <!-- ========================================
-       TIMER
-       ======================================== -->
 
   <div class="panel timer-panel">
 
@@ -1147,10 +1054,6 @@
   </div>
 
 
-  <!-- ========================================
-       GENERATE
-       ======================================== -->
-
   <div class="generate-area">
 
     <button
@@ -1165,10 +1068,6 @@
 
   <div id="message"></div>
 
-
-  <!-- ========================================
-       GAME STATUS
-       ======================================== -->
 
   <div id="gameStatus">
 
@@ -1192,11 +1091,11 @@
       <div class="progress-info">
 
         <span>
-          Adventure Progress
+          Goal Progress
         </span>
 
         <span id="progressText">
-          0 / 24
+          —
         </span>
 
       </div>
@@ -1213,10 +1112,6 @@
   </div>
 
 
-  <!-- ========================================
-       WIN MESSAGE
-       ======================================== -->
-
   <div id="winBanner">
 
     <h2 id="winTitle">
@@ -1227,10 +1122,6 @@
 
   </div>
 
-
-  <!-- ========================================
-       BOARD
-       ======================================== -->
 
   <div id="bingoBoard"></div>
 
@@ -1245,26 +1136,13 @@
 
 <script>
 
-
-  /* ==========================================
-     GOOGLE SHEET
-     ========================================== */
-
   const SHEET_CSV_URL =
     "https://docs.google.com/spreadsheets/d/e/2PACX-1vTvQNoKqnFajYXN6EIoGgwCVTWAWp1w0p-U21o1hfO_OCw3JnS_TYluyXQHx0-y0iU-bdlAf2CdakM8/pub?gid=0&single=true&output=csv";
 
 
-  /* ==========================================
-     SAVE
-     ========================================== */
-
   const SAVE_KEY =
     "paliaBingoSavedGame";
 
-
-  /* ==========================================
-     GAME STATE
-     ========================================== */
 
   let selectedDifficulty = "";
   let selectedWinCondition = "";
@@ -1276,10 +1154,6 @@
 
   let currentCardTasks = [];
 
-
-  /* ==========================================
-     PAGE LOAD
-     ========================================== */
 
   window.addEventListener(
     "DOMContentLoaded",
@@ -1322,10 +1196,6 @@
     }
   );
 
-
-  /* ==========================================
-     SAVED GAME
-     ========================================== */
 
   function checkForSavedGame() {
 
@@ -1584,6 +1454,18 @@
       false;
 
 
+    document.getElementById(
+      "progressText"
+    ).textContent =
+      "—";
+
+
+    document.getElementById(
+      "progressBar"
+    ).style.width =
+      "0%";
+
+
     updateTimerDisplay();
   }
 
@@ -1644,10 +1526,6 @@
   }
 
 
-  /* ==========================================
-     DIFFICULTY
-     ========================================== */
-
   function selectDifficulty(
     difficulty,
     button
@@ -1678,10 +1556,6 @@
   }
 
 
-  /* ==========================================
-     WIN CONDITION
-     ========================================== */
-
   function selectWinCondition(
     winCondition,
     button
@@ -1709,6 +1583,17 @@
 
 
     updateSelectionMessage();
+
+    if (
+      document.querySelectorAll(
+        ".bingo-square"
+      ).length === 25
+    ) {
+
+      updateProgress();
+      checkWinCondition();
+      saveGame();
+    }
   }
 
 
@@ -1750,10 +1635,6 @@
       message;
   }
 
-
-  /* ==========================================
-     TIMER
-     ========================================== */
 
   function selectTimerMode(
     mode,
@@ -1990,10 +1871,6 @@
   }
 
 
-  /* ==========================================
-     GOOGLE SHEET
-     ========================================== */
-
   async function loadTasks() {
 
     const separator =
@@ -2136,6 +2013,16 @@
     }
 
 
+    if (
+      rows.length === 0
+    ) {
+
+      throw new Error(
+        "No task data was found."
+      );
+    }
+
+
     const headers =
       rows[0].map(
         header =>
@@ -2254,10 +2141,6 @@
     return tasks;
   }
 
-
-  /* ==========================================
-     GENERATE CARD
-     ========================================== */
 
   async function generateCard() {
 
@@ -2522,10 +2405,6 @@
   }
 
 
-  /* ==========================================
-     CATEGORY BALANCING
-     ========================================== */
-
   function selectBalancedTasks(
     taskPool,
     count,
@@ -2673,10 +2552,6 @@
     return array;
   }
 
-
-  /* ==========================================
-     DISPLAY CARD
-     ========================================== */
 
   function displayCard(
     tasks,
@@ -2847,10 +2722,6 @@
   }
 
 
-  /* ==========================================
-     PROGRESS
-     ========================================== */
-
   function updateProgress() {
 
     const squares =
@@ -2864,57 +2735,251 @@
     if (
       squares.length !== 25
     ) {
+      return;
+    }
+
+
+    const completed =
+      squares.map(
+        square =>
+          square.classList.contains(
+            "completed"
+          )
+      );
+
+
+    const lines = [
+
+      [0, 1, 2, 3, 4],
+      [5, 6, 7, 8, 9],
+      [10, 11, 12, 13, 14],
+      [15, 16, 17, 18, 19],
+      [20, 21, 22, 23, 24],
+
+      [0, 5, 10, 15, 20],
+      [1, 6, 11, 16, 21],
+      [2, 7, 12, 17, 22],
+      [3, 8, 13, 18, 23],
+      [4, 9, 14, 19, 24],
+
+      [0, 6, 12, 18, 24],
+      [4, 8, 12, 16, 20]
+
+    ];
+
+
+    if (
+      selectedWinCondition ===
+      "Classic Bingo"
+    ) {
+
+      const lineScores =
+        lines.map(
+          function(line) {
+
+            return line.filter(
+              index =>
+                completed[index]
+            ).length;
+          }
+        );
+
+
+      const bestLine =
+        Math.max(
+          ...lineScores
+        );
+
+
+      const percent =
+        (
+          bestLine / 5
+        ) * 100;
+
+
+      document.getElementById(
+        "progressText"
+      ).textContent =
+        "Best Line: " +
+        bestLine +
+        " / 5";
+
+
+      document.getElementById(
+        "progressBar"
+      ).style.width =
+        percent +
+        "%";
+
 
       return;
     }
 
 
-    let completedTasks =
-      0;
+    if (
+      selectedWinCondition ===
+      "Two Lines"
+    ) {
+
+      const lineScores =
+        lines.map(
+          function(line) {
+
+            return line.filter(
+              index =>
+                completed[index]
+            ).length;
+          }
+        );
 
 
-    squares.forEach(
-      function(square, index) {
-
-        if (
-          index !== 12 &&
-          square.classList.contains(
-            "completed"
-          )
-        ) {
-
-          completedTasks++;
+      lineScores.sort(
+        function(a, b) {
+          return b - a;
         }
-      }
-    );
+      );
 
 
-    const percent =
-      (
-        completedTasks /
+      const bestLine =
+        lineScores[0] || 0;
+
+
+      const secondBestLine =
+        lineScores[1] || 0;
+
+
+      const percent =
+        (
+          (
+            bestLine +
+            secondBestLine
+          ) /
+          10
+        ) * 100;
+
+
+      document.getElementById(
+        "progressText"
+      ).textContent =
+        "Lines: " +
+        bestLine +
+        "/5 + " +
+        secondBestLine +
+        "/5";
+
+
+      document.getElementById(
+        "progressBar"
+      ).style.width =
+        percent +
+        "%";
+
+
+      return;
+    }
+
+
+    if (
+      selectedWinCondition ===
+      "X Out"
+    ) {
+
+      const xSquares = [
+        0,
+        4,
+        6,
+        8,
+        16,
+        18,
+        20,
         24
-      ) *
-      100;
+      ];
 
 
-    document.getElementById(
-      "progressText"
-    ).textContent =
-      completedTasks +
-      " / 24";
+      const completedXTasks =
+        xSquares.filter(
+          index =>
+            completed[index]
+        ).length;
 
 
-    document.getElementById(
-      "progressBar"
-    ).style.width =
-      percent +
-      "%";
+      const percent =
+        (
+          completedXTasks /
+          8
+        ) * 100;
+
+
+      document.getElementById(
+        "progressText"
+      ).textContent =
+        "X Progress: " +
+        completedXTasks +
+        " / 8";
+
+
+      document.getElementById(
+        "progressBar"
+      ).style.width =
+        percent +
+        "%";
+
+
+      return;
+    }
+
+
+    if (
+      selectedWinCondition ===
+      "Blackout"
+    ) {
+
+      let completedTasks =
+        0;
+
+
+      squares.forEach(
+        function(square, index) {
+
+          if (
+            index !== 12 &&
+            square.classList.contains(
+              "completed"
+            )
+          ) {
+
+            completedTasks++;
+          }
+        }
+      );
+
+
+      const percent =
+        (
+          completedTasks /
+          24
+        ) * 100;
+
+
+      document.getElementById(
+        "progressText"
+      ).textContent =
+        completedTasks +
+        " / 24";
+
+
+      document.getElementById(
+        "progressBar"
+      ).style.width =
+        percent +
+        "%";
+
+
+      return;
+    }
+
   }
 
-
-  /* ==========================================
-     WIN DETECTION
-     ========================================== */
 
   function checkWinCondition() {
 
@@ -3110,10 +3175,6 @@
   }
 
 
-  /* ==========================================
-     ERROR
-     ========================================== */
-
   function showError(
     error
   ) {
@@ -3129,7 +3190,6 @@
       "⚠️ " +
       error.message;
   }
-
 
 </script>
 
