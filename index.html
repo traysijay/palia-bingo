@@ -2,11 +2,1552 @@
 <html>
 <head>
   <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
   <title>Palia Bingo</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 30px;
+      background: #f7f7f7;
+      margin: 0;
+    }
+
+    h1 {
+      font-size: 40px;
+      margin-bottom: 10px;
+    }
+
+    p {
+      font-size: 18px;
+    }
+
+    .difficulty-buttons,
+    .win-buttons,
+    .timer-buttons,
+    .timer-controls {
+      margin: 20px 0;
+    }
+
+    button {
+      font-size: 18px;
+      padding: 12px 20px;
+      margin: 8px;
+      cursor: pointer;
+      border-radius: 8px;
+      border: 1px solid #999;
+      background: white;
+    }
+
+    button:hover {
+      background: #eeeeee;
+    }
+
+    .selected {
+      border: 3px solid black;
+      background: #e8e8e8;
+    }
+
+    #generateButton {
+      display: block;
+      margin: 30px auto;
+      font-weight: bold;
+    }
+
+    #message {
+      margin: 25px auto;
+      font-size: 18px;
+      min-height: 25px;
+    }
+
+    .timer-section {
+      margin: 30px auto;
+      padding: 20px;
+      max-width: 500px;
+      background: white;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+    }
+
+    #timerDisplay {
+      font-size: 42px;
+      font-weight: bold;
+      margin: 15px 0;
+    }
+
+    #countdownOptions {
+      margin: 15px 0;
+    }
+
+    #countdownMinutes {
+      font-size: 18px;
+      padding: 6px;
+      width: 70px;
+    }
+
+    #bingoBoard {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 6px;
+      max-width: 900px;
+      margin: 30px auto;
+    }
+
+    .bingo-square {
+      background: white;
+      border: 2px solid #777;
+      border-radius: 8px;
+      min-height: 120px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      padding: 10px;
+      font-size: 16px;
+      cursor: pointer;
+      box-sizing: border-box;
+    }
+
+    .bingo-square:hover {
+      background: #eeeeee;
+    }
+
+    .bingo-square.completed {
+      background: #c8e6c9;
+      text-decoration: line-through;
+    }
+
+    .free-space {
+      font-weight: bold;
+      background: #e1bee7;
+    }
+
+    @media (max-width: 700px) {
+      body {
+        padding: 12px;
+      }
+
+      h1 {
+        font-size: 30px;
+      }
+
+      button {
+        font-size: 15px;
+        padding: 10px 12px;
+        margin: 5px;
+      }
+
+      .bingo-square {
+        min-height: 90px;
+        padding: 5px;
+        font-size: 12px;
+      }
+
+      #timerDisplay {
+        font-size: 34px;
+      }
+    }
+  </style>
 </head>
 
 <body>
+
   <h1>🌿 Palia Bingo</h1>
-  <p>If you can see this, GitHub Pages is working!</p>
+
+  <p>Choose your difficulty:</p>
+
+  <div class="difficulty-buttons">
+
+    <button onclick="selectDifficulty('Cozy', this)">
+      🌱 Cozy
+    </button>
+
+    <button onclick="selectDifficulty('Standard', this)">
+      ✨ Standard
+    </button>
+
+    <button onclick="selectDifficulty('Challenge', this)">
+      🔥 Challenge
+    </button>
+
+    <button onclick="selectDifficulty('Chaos', this)">
+      🎲 Chaos
+    </button>
+
+  </div>
+
+
+  <p>Choose your win condition:</p>
+
+  <div class="win-buttons">
+
+    <button onclick="selectWinCondition('Classic Bingo', this)">
+      🎯 Classic Bingo
+    </button>
+
+    <button onclick="selectWinCondition('Two Lines', this)">
+      ✌️ Two Lines
+    </button>
+
+    <button onclick="selectWinCondition('X Out', this)">
+      ❌ X Out
+    </button>
+
+    <button onclick="selectWinCondition('Blackout', this)">
+      🟪 Blackout
+    </button>
+
+  </div>
+
+
+  <div class="timer-section">
+
+    <p>Choose timer:</p>
+
+    <div class="timer-buttons">
+
+      <button onclick="selectTimerMode('Count Up', this)">
+        ⏱️ Count Up
+      </button>
+
+      <button onclick="selectTimerMode('Countdown', this)">
+        ⏳ Countdown
+      </button>
+
+    </div>
+
+
+    <div id="countdownOptions" style="display:none;">
+
+      <label for="countdownMinutes">
+        Minutes:
+      </label>
+
+      <input
+        type="number"
+        id="countdownMinutes"
+        min="1"
+        value="60"
+      >
+
+    </div>
+
+
+    <div style="margin: 12px 0;">
+
+      <label>
+
+        <input
+          type="checkbox"
+          id="autoStartTimer"
+        >
+
+        Start timer automatically when card is generated
+
+      </label>
+
+    </div>
+
+
+    <div id="timerDisplay">
+      00:00
+    </div>
+
+
+    <div class="timer-controls">
+
+      <button onclick="startTimer()">
+        Start
+      </button>
+
+      <button onclick="pauseTimer()">
+        Pause
+      </button>
+
+      <button onclick="resetTimer()">
+        Reset
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <button
+    id="generateButton"
+    onclick="generateCard()"
+  >
+    Generate Card
+  </button>
+
+
+  <div id="message"></div>
+
+  <div id="bingoBoard"></div>
+
+
+  <script>
+
+    /*
+    ==========================================
+    GOOGLE SHEET CONNECTION
+    ==========================================
+    */
+
+    const SHEET_CSV_URL =
+      "https://docs.google.com/spreadsheets/d/e/2PACX-1vTvQNoKqnFajYXN6EIoGgwCVTWAWp1w0p-U21o1hfO_OCw3JnS_TYluyXQHx0-y0iU-bdlAf2CdakM8/pub?gid=0&single=true&output=csv";
+
+
+    /*
+    ==========================================
+    GAME SETTINGS
+    ==========================================
+    */
+
+    let selectedDifficulty = "";
+    let selectedWinCondition = "";
+
+    let selectedTimerMode = "";
+
+    let timerInterval = null;
+    let timerSeconds = 0;
+    let timerRunning = false;
+
+
+    /*
+    ==========================================
+    DIFFICULTY
+    ==========================================
+    */
+
+    function selectDifficulty(difficulty, button) {
+
+      selectedDifficulty = difficulty;
+
+      const buttons =
+        document.querySelectorAll(
+          ".difficulty-buttons button"
+        );
+
+      buttons.forEach(function(btn) {
+        btn.classList.remove("selected");
+      });
+
+      button.classList.add("selected");
+
+      updateSelectionMessage();
+    }
+
+
+    /*
+    ==========================================
+    WIN CONDITION
+    ==========================================
+    */
+
+    function selectWinCondition(
+      winCondition,
+      button
+    ) {
+
+      selectedWinCondition =
+        winCondition;
+
+      const buttons =
+        document.querySelectorAll(
+          ".win-buttons button"
+        );
+
+      buttons.forEach(function(btn) {
+        btn.classList.remove("selected");
+      });
+
+      button.classList.add("selected");
+
+      updateSelectionMessage();
+    }
+
+
+    function updateSelectionMessage() {
+
+      let message = "";
+
+      if (selectedDifficulty) {
+
+        message +=
+          "Difficulty: <strong>" +
+          selectedDifficulty +
+          "</strong>";
+      }
+
+      if (selectedWinCondition) {
+
+        if (message) {
+          message +=
+            " &nbsp; | &nbsp; ";
+        }
+
+        message +=
+          "Win condition: <strong>" +
+          selectedWinCondition +
+          "</strong>";
+      }
+
+      document.getElementById(
+        "message"
+      ).innerHTML = message;
+    }
+
+
+    /*
+    ==========================================
+    TIMER
+    ==========================================
+    */
+
+    function selectTimerMode(
+      mode,
+      button
+    ) {
+
+      selectedTimerMode = mode;
+
+      const buttons =
+        document.querySelectorAll(
+          ".timer-buttons button"
+        );
+
+      buttons.forEach(function(btn) {
+        btn.classList.remove("selected");
+      });
+
+      button.classList.add("selected");
+
+      const countdownOptions =
+        document.getElementById(
+          "countdownOptions"
+        );
+
+      if (mode === "Countdown") {
+
+        countdownOptions.style.display =
+          "block";
+
+      } else {
+
+        countdownOptions.style.display =
+          "none";
+      }
+
+      resetTimer();
+    }
+
+
+    function startTimer() {
+
+      if (!selectedTimerMode) {
+
+        document.getElementById(
+          "message"
+        ).innerHTML =
+          "Please choose a timer mode first!";
+
+        return;
+      }
+
+
+      if (timerRunning) {
+        return;
+      }
+
+
+      if (
+        selectedTimerMode === "Countdown" &&
+        timerSeconds === 0
+      ) {
+
+        const minutes =
+          parseInt(
+            document.getElementById(
+              "countdownMinutes"
+            ).value
+          );
+
+        if (!minutes || minutes <= 0) {
+
+          document.getElementById(
+            "message"
+          ).innerHTML =
+            "Please enter a valid countdown time.";
+
+          return;
+        }
+
+        timerSeconds =
+          minutes * 60;
+
+        updateTimerDisplay();
+      }
+
+
+      timerRunning = true;
+
+
+      timerInterval =
+        setInterval(function() {
+
+          if (
+            selectedTimerMode ===
+            "Count Up"
+          ) {
+
+            timerSeconds++;
+          }
+
+          else if (
+            selectedTimerMode ===
+            "Countdown"
+          ) {
+
+            timerSeconds--;
+
+            if (timerSeconds <= 0) {
+
+              timerSeconds = 0;
+
+              updateTimerDisplay();
+
+              pauseTimer();
+
+              document.getElementById(
+                "message"
+              ).innerHTML =
+                "<strong>⏰ TIME'S UP!</strong>";
+
+              return;
+            }
+          }
+
+          updateTimerDisplay();
+
+        }, 1000);
+    }
+
+
+    function pauseTimer() {
+
+      clearInterval(timerInterval);
+
+      timerInterval = null;
+      timerRunning = false;
+    }
+
+
+    function resetTimer() {
+
+      pauseTimer();
+
+      if (
+        selectedTimerMode ===
+        "Countdown"
+      ) {
+
+        const minutes =
+          parseInt(
+            document.getElementById(
+              "countdownMinutes"
+            ).value
+          );
+
+        timerSeconds =
+          minutes && minutes > 0
+            ? minutes * 60
+            : 0;
+
+      } else {
+
+        timerSeconds = 0;
+      }
+
+      updateTimerDisplay();
+    }
+
+
+    function updateTimerDisplay() {
+
+      const minutes =
+        Math.floor(
+          timerSeconds / 60
+        );
+
+      const seconds =
+        timerSeconds % 60;
+
+      const formattedMinutes =
+        String(minutes).padStart(
+          2,
+          "0"
+        );
+
+      const formattedSeconds =
+        String(seconds).padStart(
+          2,
+          "0"
+        );
+
+      document.getElementById(
+        "timerDisplay"
+      ).textContent =
+        formattedMinutes +
+        ":" +
+        formattedSeconds;
+    }
+
+
+    /*
+    ==========================================
+    LOAD GOOGLE SHEET
+    ==========================================
+    */
+
+    async function loadTasks() {
+
+      const response =
+        await fetch(
+          SHEET_CSV_URL +
+          "&cache=" +
+          Date.now()
+        );
+
+      if (!response.ok) {
+
+        throw new Error(
+          "Unable to load the task list."
+        );
+      }
+
+      const csvText =
+        await response.text();
+
+      return parseCSV(csvText);
+    }
+
+
+    /*
+    ==========================================
+    CSV PARSER
+    ==========================================
+    */
+
+    function parseCSV(csvText) {
+
+      const rows = [];
+      let row = [];
+      let value = "";
+      let insideQuotes = false;
+
+
+      for (
+        let i = 0;
+        i < csvText.length;
+        i++
+      ) {
+
+        const character =
+          csvText[i];
+
+        const nextCharacter =
+          csvText[i + 1];
+
+
+        if (character === '"') {
+
+          if (
+            insideQuotes &&
+            nextCharacter === '"'
+          ) {
+
+            value += '"';
+            i++;
+
+          } else {
+
+            insideQuotes =
+              !insideQuotes;
+          }
+        }
+
+        else if (
+          character === "," &&
+          !insideQuotes
+        ) {
+
+          row.push(value);
+          value = "";
+        }
+
+        else if (
+          (
+            character === "\n" ||
+            character === "\r"
+          ) &&
+          !insideQuotes
+        ) {
+
+          if (
+            character === "\r" &&
+            nextCharacter === "\n"
+          ) {
+            i++;
+          }
+
+          row.push(value);
+
+          if (
+            row.some(
+              cell =>
+                cell.trim() !== ""
+            )
+          ) {
+
+            rows.push(row);
+          }
+
+          row = [];
+          value = "";
+        }
+
+        else {
+
+          value += character;
+        }
+      }
+
+
+      if (
+        value !== "" ||
+        row.length > 0
+      ) {
+
+        row.push(value);
+        rows.push(row);
+      }
+
+
+      if (rows.length < 2) {
+
+        throw new Error(
+          "No task data was found in the Google Sheet."
+        );
+      }
+
+
+      const headers =
+        rows[0].map(
+          header =>
+            header.trim()
+              .toLowerCase()
+        );
+
+
+      const taskIndex =
+        headers.indexOf("task");
+
+      const difficultyIndex =
+        headers.indexOf(
+          "difficulty"
+        );
+
+      const categoryIndex =
+        headers.indexOf(
+          "category"
+        );
+
+      const activeIndex =
+        headers.indexOf(
+          "active"
+        );
+
+
+      if (
+        taskIndex === -1 ||
+        difficultyIndex === -1 ||
+        categoryIndex === -1 ||
+        activeIndex === -1
+      ) {
+
+        throw new Error(
+          "Your Google Sheet must contain Task, Difficulty, Category, and Active columns."
+        );
+      }
+
+
+      const tasks = [];
+
+
+      for (
+        let i = 1;
+        i < rows.length;
+        i++
+      ) {
+
+        const row =
+          rows[i];
+
+        const task =
+          (
+            row[taskIndex] || ""
+          ).trim();
+
+        const difficulty =
+          (
+            row[
+              difficultyIndex
+            ] || ""
+          ).trim();
+
+        const category =
+          (
+            row[
+              categoryIndex
+            ] || "Misc"
+          ).trim();
+
+        const active =
+          (
+            row[
+              activeIndex
+            ] || ""
+          )
+          .trim()
+          .toLowerCase();
+
+
+        const isActive =
+          active === "true" ||
+          active === "yes" ||
+          active === "1";
+
+
+        if (
+          task &&
+          isActive
+        ) {
+
+          tasks.push({
+            task: task,
+            difficulty:
+              difficulty,
+            category:
+              category || "Misc"
+          });
+        }
+      }
+
+
+      return tasks;
+    }
+
+
+    /*
+    ==========================================
+    CARD GENERATION
+    ==========================================
+    */
+
+    async function generateCard() {
+
+      if (!selectedDifficulty) {
+
+        document.getElementById(
+          "message"
+        ).innerHTML =
+          "Please choose a difficulty first!";
+
+        return;
+      }
+
+
+      if (!selectedWinCondition) {
+
+        document.getElementById(
+          "message"
+        ).innerHTML =
+          "Please choose a win condition!";
+
+        return;
+      }
+
+
+      document.getElementById(
+        "message"
+      ).innerHTML =
+        "Loading tasks and generating your card...";
+
+
+      document.getElementById(
+        "bingoBoard"
+      ).innerHTML = "";
+
+
+      try {
+
+        const tasks =
+          await loadTasks();
+
+        const cardTasks =
+          generateBingoTasks(
+            tasks,
+            selectedDifficulty
+          );
+
+        displayCard(
+          cardTasks
+        );
+
+      }
+
+      catch (error) {
+
+        showError(error);
+      }
+    }
+
+
+    function generateBingoTasks(
+      tasks,
+      mode
+    ) {
+
+      const easy =
+        tasks.filter(
+          task =>
+            task.difficulty ===
+            "Easy"
+        );
+
+      const medium =
+        tasks.filter(
+          task =>
+            task.difficulty ===
+            "Medium"
+        );
+
+      const hard =
+        tasks.filter(
+          task =>
+            task.difficulty ===
+            "Hard"
+        );
+
+
+      let requirements = {};
+
+
+      if (mode === "Cozy") {
+
+        requirements = {
+          Easy: 14,
+          Medium: 8,
+          Hard: 2
+        };
+      }
+
+      else if (
+        mode === "Standard"
+      ) {
+
+        requirements = {
+          Easy: 7,
+          Medium: 12,
+          Hard: 5
+        };
+      }
+
+      else if (
+        mode === "Challenge"
+      ) {
+
+        requirements = {
+          Easy: 3,
+          Medium: 9,
+          Hard: 12
+        };
+      }
+
+      else if (
+        mode === "Chaos"
+      ) {
+
+        if (tasks.length < 24) {
+
+          throw new Error(
+            "Chaos Mode needs at least 24 active tasks. You currently have " +
+            tasks.length +
+            "."
+          );
+        }
+
+
+        const categoryCounts =
+          {};
+
+        return shuffleArray(
+          selectBalancedTasks(
+            tasks,
+            24,
+            categoryCounts
+          )
+        );
+      }
+
+
+      const taskGroups = {
+        Easy: easy,
+        Medium: medium,
+        Hard: hard
+      };
+
+
+      for (
+        const difficulty
+        in requirements
+      ) {
+
+        const needed =
+          requirements[
+            difficulty
+          ];
+
+        const available =
+          taskGroups[
+            difficulty
+          ].length;
+
+
+        if (
+          available < needed
+        ) {
+
+          throw new Error(
+            mode +
+            " Mode needs at least " +
+            needed +
+            " " +
+            difficulty +
+            " tasks, but only " +
+            available +
+            " are currently active."
+          );
+        }
+      }
+
+
+      const categoryCounts =
+        {};
+
+      let selectedTasks = [];
+
+
+      selectedTasks.push(
+        ...selectBalancedTasks(
+          easy,
+          requirements.Easy,
+          categoryCounts
+        )
+      );
+
+
+      selectedTasks.push(
+        ...selectBalancedTasks(
+          medium,
+          requirements.Medium,
+          categoryCounts
+        )
+      );
+
+
+      selectedTasks.push(
+        ...selectBalancedTasks(
+          hard,
+          requirements.Hard,
+          categoryCounts
+        )
+      );
+
+
+      return shuffleArray(
+        selectedTasks
+      );
+    }
+
+
+    /*
+    ==========================================
+    CATEGORY BALANCING
+    ==========================================
+    */
+
+    function selectBalancedTasks(
+      taskPool,
+      count,
+      categoryCounts
+    ) {
+
+      let availableTasks =
+        shuffleArray(
+          [...taskPool]
+        );
+
+      const selectedTasks = [];
+
+
+      for (
+        let i = 0;
+        i < count;
+        i++
+      ) {
+
+        let lowestCount =
+          Infinity;
+
+
+        availableTasks.forEach(
+          function(task) {
+
+            const category =
+              task.category ||
+              "Misc";
+
+            const currentCount =
+              categoryCounts[
+                category
+              ] || 0;
+
+            if (
+              currentCount <
+              lowestCount
+            ) {
+
+              lowestCount =
+                currentCount;
+            }
+          }
+        );
+
+
+        const bestChoices =
+          availableTasks.filter(
+            function(task) {
+
+              const category =
+                task.category ||
+                "Misc";
+
+              const currentCount =
+                categoryCounts[
+                  category
+                ] || 0;
+
+              return (
+                currentCount ===
+                lowestCount
+              );
+            }
+          );
+
+
+        const chosenTask =
+          bestChoices[
+            Math.floor(
+              Math.random() *
+              bestChoices.length
+            )
+          ];
+
+
+        selectedTasks.push(
+          chosenTask
+        );
+
+
+        const chosenCategory =
+          chosenTask.category ||
+          "Misc";
+
+
+        categoryCounts[
+          chosenCategory
+        ] =
+          (
+            categoryCounts[
+              chosenCategory
+            ] || 0
+          ) + 1;
+
+
+        availableTasks =
+          availableTasks.filter(
+            function(task) {
+
+              return (
+                task !==
+                chosenTask
+              );
+            }
+          );
+      }
+
+
+      return selectedTasks;
+    }
+
+
+    function shuffleArray(
+      array
+    ) {
+
+      for (
+        let i =
+          array.length - 1;
+        i > 0;
+        i--
+      ) {
+
+        const j =
+          Math.floor(
+            Math.random() *
+            (i + 1)
+          );
+
+        [
+          array[i],
+          array[j]
+        ] =
+          [
+            array[j],
+            array[i]
+          ];
+      }
+
+      return array;
+    }
+
+
+    /*
+    ==========================================
+    DISPLAY CARD
+    ==========================================
+    */
+
+    function displayCard(tasks) {
+
+      const board =
+        document.getElementById(
+          "bingoBoard"
+        );
+
+      board.innerHTML = "";
+
+      let taskIndex = 0;
+
+
+      for (
+        let square = 0;
+        square < 25;
+        square++
+      ) {
+
+        const div =
+          document.createElement(
+            "div"
+          );
+
+        div.classList.add(
+          "bingo-square"
+        );
+
+
+        if (square === 12) {
+
+          div.innerHTML =
+            "⭐<br>FREE<br>SPACE";
+
+          div.classList.add(
+            "free-space"
+          );
+
+          div.classList.add(
+            "completed"
+          );
+
+        }
+
+        else {
+
+          const task =
+            tasks[
+              taskIndex
+            ];
+
+
+          if (task) {
+
+            div.textContent =
+              task.task;
+
+
+            div.onclick =
+              function() {
+
+                this.classList.toggle(
+                  "completed"
+                );
+
+                checkWinCondition();
+              };
+          }
+
+
+          taskIndex++;
+        }
+
+
+        board.appendChild(div);
+      }
+
+
+      document.getElementById(
+        "message"
+      ).innerHTML =
+        "<strong>" +
+        selectedDifficulty +
+        "</strong> card generated — Win condition: <strong>" +
+        selectedWinCondition +
+        "</strong>";
+
+
+      const autoStart =
+        document.getElementById(
+          "autoStartTimer"
+        ).checked;
+
+
+      if (
+        autoStart &&
+        selectedTimerMode
+      ) {
+
+        resetTimer();
+        startTimer();
+      }
+    }
+
+
+    /*
+    ==========================================
+    WIN DETECTION
+    ==========================================
+    */
+
+    function checkWinCondition() {
+
+      const squares =
+        Array.from(
+          document.querySelectorAll(
+            ".bingo-square"
+          )
+        );
+
+
+      if (
+        squares.length !== 25
+      ) {
+
+        return;
+      }
+
+
+      const completed =
+        squares.map(
+          function(square) {
+
+            return (
+              square.classList.contains(
+                "completed"
+              )
+            );
+          }
+        );
+
+
+      const lines = [
+
+        [0, 1, 2, 3, 4],
+        [5, 6, 7, 8, 9],
+        [10, 11, 12, 13, 14],
+        [15, 16, 17, 18, 19],
+        [20, 21, 22, 23, 24],
+
+        [0, 5, 10, 15, 20],
+        [1, 6, 11, 16, 21],
+        [2, 7, 12, 17, 22],
+        [3, 8, 13, 18, 23],
+        [4, 9, 14, 19, 24],
+
+        [0, 6, 12, 18, 24],
+        [4, 8, 12, 16, 20]
+
+      ];
+
+
+      function lineIsComplete(
+        line
+      ) {
+
+        return line.every(
+          function(index) {
+
+            return completed[
+              index
+            ];
+          }
+        );
+      }
+
+
+      const completedLines =
+        lines.filter(
+          lineIsComplete
+        ).length;
+
+
+      let hasWon = false;
+      let winMessage = "";
+
+
+      if (
+        selectedWinCondition ===
+        "Classic Bingo"
+      ) {
+
+        if (
+          completedLines >= 1
+        ) {
+
+          hasWon = true;
+          winMessage =
+            "🎉 BINGO!";
+        }
+      }
+
+
+      else if (
+        selectedWinCondition ===
+        "Two Lines"
+      ) {
+
+        if (
+          completedLines >= 2
+        ) {
+
+          hasWon = true;
+          winMessage =
+            "🎉 TWO LINES COMPLETE!";
+        }
+      }
+
+
+      else if (
+        selectedWinCondition ===
+        "X Out"
+      ) {
+
+        const diagonalOne =
+          lineIsComplete(
+            [0, 6, 12, 18, 24]
+          );
+
+        const diagonalTwo =
+          lineIsComplete(
+            [4, 8, 12, 16, 20]
+          );
+
+
+        if (
+          diagonalOne &&
+          diagonalTwo
+        ) {
+
+          hasWon = true;
+          winMessage =
+            "🎉 X COMPLETE!";
+        }
+      }
+
+
+      else if (
+        selectedWinCondition ===
+        "Blackout"
+      ) {
+
+        if (
+          completed.every(
+            Boolean
+          )
+        ) {
+
+          hasWon = true;
+          winMessage =
+            "🎉 BLACKOUT!";
+        }
+      }
+
+
+      if (hasWon) {
+
+        pauseTimer();
+
+        document.getElementById(
+          "message"
+        ).innerHTML =
+          "<strong>" +
+          winMessage +
+          "</strong>" +
+          "<br>Final time: <strong>" +
+          document.getElementById(
+            "timerDisplay"
+          ).textContent +
+          "</strong>";
+      }
+    }
+
+
+    /*
+    ==========================================
+    ERROR MESSAGE
+    ==========================================
+    */
+
+    function showError(error) {
+
+      console.error(error);
+
+      document.getElementById(
+        "message"
+      ).innerHTML =
+        "Something went wrong: " +
+        error.message;
+    }
+
+  </script>
+
 </body>
 </html>
